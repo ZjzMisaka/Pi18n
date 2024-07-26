@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pi18n\Pi18n.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EditorConfigFiles Remove="F:\_programming\c#\Pi18n\Pi18nTest\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="resource\language-resource-ja-JP.msg.i18n" />
+    <None Remove="resource\language-resource-ja-JP.ui.i18n" />
+    <None Remove="resource\language-resource-zh-CN.msg.i18n" />
+    <None Remove="resource\language-resource-zh-CN.ui.i18n" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="F:\_programming\c#\Pi18n\Pi18nTest\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="resource\language-resource-ja-JP.msg.i18n">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resource\language-resource-ja-JP.ui.i18n">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resource\language-resource-zh-CN.msg.i18n">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resource\language-resource-zh-CN.ui.i18n">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

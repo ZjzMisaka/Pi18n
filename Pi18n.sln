@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34322.80
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pi18n", "Pi18n\Pi18n.csproj", "{6AFA632A-AA81-4DE1-A3D0-995A54DF3D62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pi18nTest", "Pi18nTest\Pi18nTest.csproj", "{A0A2032E-B824-4DB0-9FB5-EAA841D9F45B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6AFA632A-AA81-4DE1-A3D0-995A54DF3D62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AFA632A-AA81-4DE1-A3D0-995A54DF3D62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AFA632A-AA81-4DE1-A3D0-995A54DF3D62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AFA632A-AA81-4DE1-A3D0-995A54DF3D62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0A2032E-B824-4DB0-9FB5-EAA841D9F45B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0A2032E-B824-4DB0-9FB5-EAA841D9F45B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0A2032E-B824-4DB0-9FB5-EAA841D9F45B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0A2032E-B824-4DB0-9FB5-EAA841D9F45B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BEFFD5D2-69D6-4F0C-802E-4EE651BF3BDD}
+	EndGlobalSection
+EndGlobal

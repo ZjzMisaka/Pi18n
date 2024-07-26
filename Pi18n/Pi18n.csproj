@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ResourceWrapper.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EditorConfigFiles Remove="F:\_programming\c#\Pi18n\Pi18n\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="F:\_programming\c#\Pi18n\Pi18n\.editorconfig" />
+  </ItemGroup>
+
+</Project>
