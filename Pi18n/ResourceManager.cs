@@ -226,7 +226,16 @@ namespace Pi18n
 
         private void LoadResourceFile(string filePath)
         {
-            foreach (string line in File.ReadAllLines(filePath))
+            string[] lines;
+            try
+            {
+                lines = File.ReadAllLines(filePath);
+            }
+            catch
+            {
+                return;
+            }
+            foreach (string line in lines)
             {
                 string[] parts = Regex.Split(line, @"(?<!\\)=");
                 if (parts.Length == 2)
