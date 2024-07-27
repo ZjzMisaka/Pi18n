@@ -6,29 +6,33 @@ A fully dynamic and easy-to-use solution for multi-lingual support
 - Load and switch languages at runtime without recompiling or restarting.
 - Simple setup and usage with minimal code changes necessary.
 
+## Installation
+If you want to include Pi18n in your project, you can [install it directly from NuGet](https://www.nuget.org/packages/Pi18n/).  
+Support: Net40+ | Net5.0+ | netstandard2.0+  
+
 ## Getting Started
 
 ### Setup
 
 1. **Resource Files**: Create resource files for different languages.  
 Example:
-```
-.resource/language-resource-ja-JP.ui.i18n
-.resource/language-resource-ja-JP.msg.i18n
-.resource/language-resource-zh-CN.ui.i18n
-.resource/language-resource-zh-CN.msg.i18n
-```
-Resource content style:
-```
-Key=Value
-```
+    ```
+    .resource/language-resource-ja-JP.ui.i18n
+    .resource/language-resource-ja-JP.msg.i18n
+    .resource/language-resource-zh-CN.ui.i18n
+    .resource/language-resource-zh-CN.msg.i18n
+    ```
+    Resource content style:
+    ```
+    Key=Value
+    ```
 
 2. **Configuration**: Set up the `ResourceManager` with the appropriate resource path and naming convention.
 
-```csharp
-ResourceManager.SetUp("resource", "language-resource-{I18N}.{ANY}.i18n");
-ResourceManager.SetLanguage(ResourceManager.CultureInfoList[0].Name);
-```
+    ```csharp
+    ResourceManager.SetUp("resource", "language-resource-{I18N}.{ANY}.i18n");
+    ResourceManager.SetLanguage(ResourceManager.CultureInfoList[0].Name);
+    ```
 
 ### Usage
 
