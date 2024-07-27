@@ -112,14 +112,14 @@ namespace Pi18n
         /// <param name="cultureInfo">CultureInfo object</param>
         public static bool SetLanguage(CultureInfo cultureInfo)
         {
-            if (!CultureInfoList.Contains(cultureInfo))
+            if (cultureInfo != null && !CultureInfoList.Contains(cultureInfo))
             {
                 cultureInfo = CultureInfoList.Where((x) => x.Name == cultureInfo.Name).FirstOrDefault();
             }
 
             if (cultureInfo == null)
             {
-                return false ;
+                return false;
             }
 
             Instance.SetLanguageInstance(cultureInfo);
