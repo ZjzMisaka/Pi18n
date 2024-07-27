@@ -18,7 +18,7 @@ namespace Pi18nTest
             set
             {
                 SetProperty<CultureInfo>(ref _selectedLanguage, value);
-                ResourceManager.SetLanguage(_selectedLanguage.Name);
+                ResourceManager.CurrentCulture = value;
                 OnPropertyChanged(nameof(NowLanguageName));
             }
         }

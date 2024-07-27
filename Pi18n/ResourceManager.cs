@@ -17,9 +17,13 @@ namespace Pi18n
         /// </summary>
         public static ResourceManager Instance => s_instance.Value;
         /// <summary>
-        /// Get current CultureInfo instance
+        /// Get or set current CultureInfo instance
         /// </summary>
-        public static CultureInfo CurrentCulture => Instance._currentCultureInfo;
+        public static CultureInfo CurrentCulture
+        {
+            get => Instance._currentCultureInfo;
+            set => SetLanguage(value);
+        }
         /// <summary>
         /// Get list of CultureInfo instance
         /// </summary>
@@ -54,10 +58,10 @@ namespace Pi18n
         /// Sets up the ResourceManager with the appropriate resource path and naming convention.
         /// </summary>
         /// <param name="path">resource path</param>
-        /// <param name="format">naming convention</param>
-        public static void SetUp(string path, string format)
+        /// <param name="fileFormat">naming convention</param>
+        public static void SetUp(string path, string fileFormat)
         {
-            Instance.SetUpInstance(path, format);
+            Instance.SetUpInstance(path, fileFormat);
         }
 
         private void SetUpInstance(string path, string format)
@@ -65,61 +69,84 @@ namespace Pi18n
             _cultureList = new List<CultureInfo>();
             _languageDict = new Dictionary<string, List<string>>();
 
-            string patternFile = format.Replace("{I18N}", @"([a-z]{2}-[A-Z]{2})").Replace("{ANY}", @"(.*)");
-            List<int> indexList = new List<int>();
+            string filePatternRegex = format.Replace("{I18N}", @"([a-z]{2}-[A-Z]{2})").Replace("{ANY}", @"(.*)");
+            List<int> placeholderIndexes = new List<int>();
             int cultureIndex = format.IndexOf("{I18N}");
             int anyIndex = format.IndexOf("{ANY}");
             while (anyIndex != -1)
             {
-                indexList.Add(anyIndex);
+                placeholderIndexes.Add(anyIndex);
                 anyIndex = format.IndexOf("{ANY}", anyIndex + 1);
             }
-            indexList.Add(cultureIndex);
-            indexList.Sort();
-            int matchGroupIndex = indexList.IndexOf(cultureIndex) + 1;
+            placeholderIndexes.Add(cultureIndex);
+            placeholderIndexes.Sort();
+            int cultureGroupIndex = placeholderIndexes.IndexOf(cultureIndex) + 1;
 
             foreach (string file in Directory.GetFiles(path))
             {
                 string fileName = Path.GetFileName(file);
-                Match match = Regex.Match(fileName, patternFile);
+                Match match = Regex.Match(fileName, filePatternRegex);
 
                 if (match.Success)
                 {
                     if (match.Groups.Count > 1)
                     {
-                        if (!_languageDict.ContainsKey(match.Groups[matchGroupIndex].Value))
+                        if (!_languageDict.ContainsKey(match.Groups[cultureGroupIndex].Value))
                         {
-                            _languageDict[match.Groups[matchGroupIndex].Value] = new List<string>();
-                            _cultureList.Add(new CultureInfo(match.Groups[matchGroupIndex].Value, false));
+                            _languageDict[match.Groups[cultureGroupIndex].Value] = new List<string>();
+                            _cultureList.Add(new CultureInfo(match.Groups[cultureGroupIndex].Value, false));
                         }
-                        _languageDict[match.Groups[matchGroupIndex].Value].Add(file);
+                        _languageDict[match.Groups[cultureGroupIndex].Value].Add(file);
                     }
                 }
             }
         }
 
         /// <summary>
+        /// Sets or switches the current language by CultureInfo object.
+        /// </summary>
+        /// <param name="cultureInfo">CultureInfo object</param>
+        public static bool SetLanguage(CultureInfo cultureInfo)
+        {
+            if (!CultureInfoList.Contains(cultureInfo))
+            {
+                cultureInfo = CultureInfoList.Where((x) => x.Name == cultureInfo.Name).FirstOrDefault();
+            }
+
+            if (cultureInfo == null)
+            {
+                return false ;
+            }
+
+            Instance.SetLanguageInstance(cultureInfo);
+
+            return true;
+        }
+
+        /// <summary>
         /// Sets or switches the current language by culture code.
         /// </summary>
         /// <param name="cultureCode">culture code</param>
-        public static void SetLanguage(string cultureCode)
-        {
-            Instance.SetLanguageInstance(cultureCode);
-        }
-
-        private void SetLanguageInstance(string cultureCode)
+        public static bool SetLanguage(string cultureCode)
         {
             CultureInfo newCulture = CultureInfoList.Where((x) => x.Name == cultureCode).FirstOrDefault();
             if (newCulture == null)
             {
-                return;
+                return false;
             }
 
+            Instance.SetLanguageInstance(newCulture);
+
+            return true;
+        }
+
+        private void SetLanguageInstance(CultureInfo newCulture)
+        {
             CultureInfo oldCulture = CurrentCulture;
             _currentCultureInfo = newCulture;
             _currentResourceDict = new Dictionary<string, string>();
 
-            foreach (string path in _languageDict[cultureCode])
+            foreach (string path in _languageDict[newCulture.Name])
             {
                 LoadResourceFile(path);
             }
