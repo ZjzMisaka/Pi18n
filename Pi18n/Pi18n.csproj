@@ -4,6 +4,15 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
+
+    <PackageId>Pi18n</PackageId>
+    <Description>A fully dynamic and simple solution for multi-lingual support.</Description>
+    <PackageTags>csharp;.net;i18n,</PackageTags>
+    <Authors>ZjzMisaka</Authors>
+    <RepositoryUrl>https://github.com/ZjzMisaka/Pi18n</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/ZjzMisaka/Pi18n</PackageProjectUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\LICENSE" Pack="true" PackagePath="\" />
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
     <None Include="F:\_programming\c#\Pi18n\Pi18n\.editorconfig" />
   </ItemGroup>
 

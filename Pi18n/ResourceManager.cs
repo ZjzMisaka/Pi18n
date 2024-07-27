@@ -35,6 +35,11 @@ namespace Pi18n
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Language changed
+        /// </summary>
+        public event EventHandler<LanguageChangedEventArgs> LanguageChanged;
+
         private ResourceManager()
         {
             _currentResourceDict = new Dictionary<string, string>();
@@ -110,6 +115,7 @@ namespace Pi18n
                 return;
             }
 
+            CultureInfo oldCulture = CurrentCulture;
             _currentCultureInfo = newCulture;
             _currentResourceDict = new Dictionary<string, string>();
 
@@ -119,6 +125,7 @@ namespace Pi18n
             }
 
             OnPropertyChanged(null);
+            LanguageChanged?.Invoke(this, new LanguageChangedEventArgs(oldCulture, CurrentCulture));
         }
 
         private void LoadResourceFile(string filePath)

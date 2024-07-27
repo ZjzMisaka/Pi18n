@@ -13,10 +13,14 @@ A fully dynamic and simple solution for multi-lingual support
 1. **Resource Files**: Create resource files for different languages.  
 Example:
 ```
-// .resource/language-resource-ja-JP.ui.i18n
-// .resource/language-resource-ja-JP.msg.i18n
-// .resource/language-resource-zh-CN.ui.i18n
-// .resource/language-resource-zh-CN.msg.i18n
+.resource/language-resource-ja-JP.ui.i18n
+.resource/language-resource-ja-JP.msg.i18n
+.resource/language-resource-zh-CN.ui.i18n
+.resource/language-resource-zh-CN.msg.i18n
+```
+Resource styke:
+```
+Key=Value
 ```
 
 2. **Configuration**: Set up the `ResourceManager` with the appropriate resource path and naming convention.
@@ -62,3 +66,9 @@ public class ViewModel : ObservableObject
 
 - SetUp : Sets up the ResourceManager with the appropriate resource path and naming convention.
 - SetLanguage : Sets or switches the current language by culture code.
+
+### Events
+
+- LanguageChanged : Language changed
+    - LanguageChangedEventArgs.OldCultureInfo
+    - LanguageChangedEventArgs.ONewCultureInfo
