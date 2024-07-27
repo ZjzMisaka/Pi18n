@@ -77,4 +77,4 @@ public class ViewModel : ObservableObject
 
 - LanguageChanged : Language changed
     - LanguageChangedEventArgs.OldCultureInfo
-    - LanguageChangedEventArgs.ONewCultureInfo
+    - LanguageChangedEventArgs.NewCultureInfo
