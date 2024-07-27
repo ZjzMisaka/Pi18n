@@ -23,6 +23,27 @@ namespace Pi18nTest
             }
         }
 
+        private string _input;
+        public string Input
+        {
+            get => _input;
+            set
+            {
+                SetProperty<string>(ref _input, value);
+                FormattedText = ResourceManager.GetFormat("Format", value);
+            }
+        }
+
+        private string _formattedText;
+        public string FormattedText
+        {
+            get => _formattedText;
+            set
+            {
+                SetProperty<string>(ref _formattedText, value);
+            }
+        }
+
         public string NowLanguageName => ResourceManager.CurrentCulture.NativeName;
 
         public ICommand MessageBoxCommand { get; set; }
@@ -32,6 +53,11 @@ namespace Pi18nTest
             ResourceManager.SetUp("resource", "language-resource-{I18N}.{ANY}.i18n");
             SelectedLanguage = ResourceManager.CultureInfoList[0];
             MessageBoxCommand = new RelayCommand(ShowMessageBox);
+
+            ResourceManager.LanguageChanged += (s, e) =>
+            {
+                FormattedText = ResourceManager.GetFormat("Format", Input);
+            };
         }
 
         private void ShowMessageBox()

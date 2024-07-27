@@ -59,6 +59,17 @@ namespace Pi18n
         }
 
         /// <summary>
+        /// Get formatted string
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="args"></param>
+        /// <returns>Formatted string</returns>
+        public string GetFormat(string key, params object[] args)
+        {
+            return string.Format(this[key], args);
+        }
+
+        /// <summary>
         /// Sets up the ResourceManager with the appropriate resource path and naming convention.
         /// </summary>
         /// <param name="path">resource path</param>

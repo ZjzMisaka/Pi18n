@@ -71,6 +71,7 @@ public class ViewModel : ObservableObject
 - `void SetUp(string path, string format)` : Sets up the ResourceManager with the appropriate resource path and naming convention.
 - `bool SetLanguage(CultureInfo cultureInfo)` : Sets or switches the current language by CultureInfo object.
 - `bool SetLanguage(string cultureCode)` : Sets or switches the current language by culture code.
+- `string GetFormat(string key, params object[] args)` : Get formatted string.
 
 ### Events
 
