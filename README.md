@@ -56,7 +56,7 @@ public class ViewModel : ObservableObject
 - CurrentCulture : Get current CultureInfo instance
 - CultureInfoList : Get list of CultureInfo instance
 - CultureCodeList : Get list of culture code (like "en-US")
-- CultureNameList : Get list of culture code (like "English (United States)")
+- CultureNameList : Get list of culture name (like "English (United States)")
 
 ### Functions
 
