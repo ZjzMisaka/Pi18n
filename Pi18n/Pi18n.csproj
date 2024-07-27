@@ -6,7 +6,7 @@
     <Nullable>disable</Nullable>
 
     <PackageId>Pi18n</PackageId>
-    <Description>A fully dynamic and simple solution for multi-lingual support.</Description>
+    <Description>A fully dynamic and easy-to-use solution for multi-lingual support.</Description>
     <PackageTags>csharp;.net;i18n,</PackageTags>
     <Authors>ZjzMisaka</Authors>
     <RepositoryUrl>https://github.com/ZjzMisaka/Pi18n</RepositoryUrl>

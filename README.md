@@ -1,5 +1,5 @@
 # Pi18n
-A fully dynamic and simple solution for multi-lingual support
+A fully dynamic and easy-to-use solution for multi-lingual support
 
 ## Features
 
