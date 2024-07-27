@@ -231,8 +231,8 @@ namespace Pi18n
                 string[] parts = Regex.Split(line, @"(?<!\\)=");
                 if (parts.Length == 2)
                 {
-                    parts[0].Replace("\\=", "=");
-                    parts[1].Replace("\\=", "=");
+                    parts[0] = parts[0].Replace("\\=", "=");
+                    parts[1] = parts[1].Replace("\\=", "=");
                     _currentResourceDict[parts[0].Trim()] = parts[1].Trim();
                 }
             }
