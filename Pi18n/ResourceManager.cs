@@ -12,7 +12,8 @@ namespace Pi18n
     {
         private static readonly Lazy<ResourceManager> s_instance = new Lazy<ResourceManager>(() => new ResourceManager());
         private Dictionary<string, string> _currentResourceDict;
-        private CultureInfo _currentCultureInfo;
+        private CultureInfo _defaultCulture;
+        private CultureInfo _currentCulture;
         private Dictionary<string, List<string>> _languageDict;
         private List<CultureInfo> _cultureList;
 
@@ -20,12 +21,22 @@ namespace Pi18n
         /// Get instance of ResourceManager
         /// </summary>
         public static ResourceManager Instance => s_instance.Value;
+
+        /// <summary>
+        /// Get or set default CultureInfo instance
+        /// </summary>
+        public static CultureInfo DefaultCulture
+        {
+            get => Instance._defaultCulture;
+            set => SetDefault(value);
+        }
+
         /// <summary>
         /// Get or set current CultureInfo instance
         /// </summary>
         public static CultureInfo CurrentCulture
         {
-            get => Instance._currentCultureInfo;
+            get => Instance._currentCulture;
             set => SetLanguage(value);
         }
         /// <summary>
@@ -118,6 +129,40 @@ namespace Pi18n
         }
 
         /// <summary>
+        /// Sets the default language by CultureInfo object.
+        /// </summary>
+        /// <param name="cultureInfo">CultureInfo object</param>
+        public static bool SetDefault(CultureInfo cultureInfo)
+        {
+            cultureInfo = CultureInfoList.Where((x) => x.Name == cultureInfo.Name).FirstOrDefault();
+            if (cultureInfo == null)
+            {
+                return false;
+            }
+
+            Instance._defaultCulture = cultureInfo;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Sets the default language by culture code.
+        /// </summary>
+        /// <param name="cultureCode">culture code</param>
+        public static bool SetDefault(string cultureCode)
+        {
+            CultureInfo cultureInfo = CultureInfoList.Where((x) => x.Name == cultureCode).FirstOrDefault();
+            if (cultureInfo == null)
+            {
+                return false;
+            }
+
+            Instance._defaultCulture = cultureInfo;
+
+            return true;
+        }
+
+        /// <summary>
         /// Sets or switches the current language by CultureInfo object.
         /// </summary>
         /// <param name="cultureInfo">CultureInfo object</param>
@@ -127,7 +172,10 @@ namespace Pi18n
             {
                 cultureInfo = CultureInfoList.Where((x) => x.Name == cultureInfo.Name).FirstOrDefault();
             }
-
+            if (cultureInfo == null)
+            {
+                cultureInfo = Instance._defaultCulture;
+            }
             if (cultureInfo == null)
             {
                 return false;
@@ -144,13 +192,17 @@ namespace Pi18n
         /// <param name="cultureCode">culture code</param>
         public static bool SetLanguage(string cultureCode)
         {
-            CultureInfo newCulture = CultureInfoList.Where((x) => x.Name == cultureCode).FirstOrDefault();
-            if (newCulture == null)
+            CultureInfo cultureInfo = CultureInfoList.Where((x) => x.Name == cultureCode).FirstOrDefault();
+            if (cultureInfo == null)
+            {
+                cultureInfo = Instance._defaultCulture;
+            }
+            if (cultureInfo == null)
             {
                 return false;
             }
 
-            Instance.SetLanguageInstance(newCulture);
+            Instance.SetLanguageInstance(cultureInfo);
 
             return true;
         }
@@ -158,7 +210,7 @@ namespace Pi18n
         private void SetLanguageInstance(CultureInfo newCulture)
         {
             CultureInfo oldCulture = CurrentCulture;
-            _currentCultureInfo = newCulture;
+            _currentCulture = newCulture;
             _currentResourceDict = new Dictionary<string, string>();
 
             foreach (string path in _languageDict[newCulture.Name])

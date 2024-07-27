@@ -19,6 +19,7 @@
         <TextBox Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Margin="0,90,0,0"/>
         <TextBlock Text="{Binding FormattedText}" Width="auto" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Margin="0,150,0,0"/>
 
+        <TextBox Text="{Binding CultureCode, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="16" Margin="0,0,0,90"/>
         <ComboBox ItemsSource="{Binding ResourceManager.CultureInfoList}" DisplayMemberPath="NativeName" SelectedValuePath="Name" SelectedItem="{Binding SelectedLanguage}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,60"></ComboBox>
         <Button Command="{Binding MessageBoxCommand}" Content="MessageBox" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,30"/>
     </Grid>

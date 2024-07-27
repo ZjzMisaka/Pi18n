@@ -44,6 +44,18 @@ namespace Pi18nTest
             }
         }
 
+        private string _cultureCode;
+        public string CultureCode
+        {
+            get => _cultureCode;
+            set
+            {
+                SetProperty<string>(ref _cultureCode, value);
+                ResourceManager.SetLanguage(value);
+                OnPropertyChanged(nameof(NowLanguageName));
+            }
+        }
+
         public string NowLanguageName => ResourceManager.CurrentCulture.NativeName;
 
         public ICommand MessageBoxCommand { get; set; }
@@ -52,6 +64,7 @@ namespace Pi18nTest
         {
             ResourceManager.SetUp("resource", "language-resource-{I18N}.{ANY}.i18n");
             SelectedLanguage = ResourceManager.CultureInfoList[0];
+            ResourceManager.DefaultCulture = SelectedLanguage;
             MessageBoxCommand = new RelayCommand(ShowMessageBox);
 
             ResourceManager.LanguageChanged += (s, e) =>

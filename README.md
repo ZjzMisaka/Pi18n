@@ -61,6 +61,7 @@ public class ViewModel : ObservableObject
 ### Properties
 
 - Instance : Get instance of ResourceManager
+- DefaultCulture : Get or set default CultureInfo instance
 - CurrentCulture : Get or set current CultureInfo instance
 - CultureInfoList : Get list of CultureInfo instance
 - CultureCodeList : Get list of culture code (like "en-US")
@@ -69,6 +70,8 @@ public class ViewModel : ObservableObject
 ### Functions
 
 - `void SetUp(string path, string format)` : Sets up the ResourceManager with the appropriate resource path and naming convention.
+- `bool SetDefault(CultureInfo cultureInfo)` : Sets the default language by CultureInfo object.
+- `bool bool SetDefault(string cultureCode)` : Sets the default language by culture code.
 - `bool SetLanguage(CultureInfo cultureInfo)` : Sets or switches the current language by CultureInfo object.
 - `bool SetLanguage(string cultureCode)` : Sets or switches the current language by culture code.
 - `string GetFormat(string key, params object[] args)` : Get formatted string.
