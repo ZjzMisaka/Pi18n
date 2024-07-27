@@ -170,11 +170,7 @@ namespace Pi18n
         {
             if (cultureInfo != null && !CultureInfoList.Contains(cultureInfo))
             {
-                cultureInfo = CultureInfoList.Where((x) => x.Name == cultureInfo.Name).FirstOrDefault();
-            }
-            if (cultureInfo == null)
-            {
-                cultureInfo = Instance._defaultCulture;
+                cultureInfo = GetCultureInfo(cultureInfo.Name);
             }
             if (cultureInfo == null)
             {
@@ -192,11 +188,7 @@ namespace Pi18n
         /// <param name="cultureCode">culture code</param>
         public static bool SetLanguage(string cultureCode)
         {
-            CultureInfo cultureInfo = CultureInfoList.Where((x) => x.Name == cultureCode).FirstOrDefault();
-            if (cultureInfo == null)
-            {
-                cultureInfo = Instance._defaultCulture;
-            }
+            CultureInfo cultureInfo = GetCultureInfo(cultureCode);
             if (cultureInfo == null)
             {
                 return false;
@@ -205,6 +197,16 @@ namespace Pi18n
             Instance.SetLanguageInstance(cultureInfo);
 
             return true;
+        }
+
+        private static CultureInfo GetCultureInfo(string cultureCode)
+        {
+            CultureInfo cultureInfo = CultureInfoList.Where((x) => x.Name == cultureCode).FirstOrDefault();
+            if (cultureInfo == null)
+            {
+                cultureInfo = Instance._defaultCulture;
+            }
+            return cultureInfo;
         }
 
         private void SetLanguageInstance(CultureInfo newCulture)
