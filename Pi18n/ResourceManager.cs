@@ -12,10 +12,25 @@ namespace Pi18n
         private Dictionary<string, List<string>> _languageDict;
         private List<CultureInfo> _cultureList;
 
+        /// <summary>
+        /// Get instance of ResourceManager
+        /// </summary>
         public static ResourceManager Instance => s_instance.Value;
+        /// <summary>
+        /// Get current CultureInfo instance
+        /// </summary>
         public static CultureInfo CurrentCulture => Instance._currentCultureInfo;
+        /// <summary>
+        /// Get list of CultureInfo instance
+        /// </summary>
         public static List<CultureInfo> CultureInfoList => Instance._cultureList;
+        /// <summary>
+        /// Get list of culture code (like "en-US")
+        /// </summary>
         public static List<string> CultureCodeList => Instance._cultureList.Select((x) => x.Name).ToList();
+        /// <summary>
+        /// Get list of culture name (like "English (United States)")
+        /// </summary>
         public static List<string> CultureNameList => Instance._cultureList.Select((x) => x.NativeName).ToList();
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -30,6 +45,11 @@ namespace Pi18n
             get => _currentResourceDict.ContainsKey(key) ? _currentResourceDict[key] : "NOT FOUND";
         }
 
+        /// <summary>
+        /// Sets up the ResourceManager with the appropriate resource path and naming convention.
+        /// </summary>
+        /// <param name="path">resource path</param>
+        /// <param name="format">naming convention</param>
         public static void SetUp(string path, string format)
         {
             Instance.SetUpInstance(path, format);
@@ -73,6 +93,10 @@ namespace Pi18n
             }
         }
 
+        /// <summary>
+        /// Sets or switches the current language by culture code.
+        /// </summary>
+        /// <param name="cultureCode">culture code</param>
         public static void SetLanguage(string cultureCode)
         {
             Instance.SetLanguageInstance(cultureCode);
