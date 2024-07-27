@@ -101,9 +101,11 @@ namespace Pi18n
         {
             foreach (string line in File.ReadAllLines(filePath))
             {
-                string[] parts = line.Split('=');
+                string[] parts = Regex.Split(line, @"(?<!\\)=");
                 if (parts.Length == 2)
                 {
+                    parts[0].Replace("\\=", "=");
+                    parts[1].Replace("\\=", "=");
                     _currentResourceDict[parts[0].Trim()] = parts[1].Trim();
                 }
             }
