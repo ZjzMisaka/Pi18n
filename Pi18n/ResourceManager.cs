@@ -242,7 +242,7 @@ namespace Pi18n
                 {
                     parts[0] = parts[0].Replace("\\=", "=");
                     parts[1] = parts[1].Replace("\\=", "=");
-                    _currentResourceDict[parts[0].Trim()] = parts[1].Trim();
+                    _currentResourceDict[parts[0]] = parts[1].Replace("\\n", "\n");
                 }
             }
         }
