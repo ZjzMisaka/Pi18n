@@ -53,6 +53,7 @@ namespace Pi18nTest
                 SetProperty<string>(ref _cultureCode, value);
                 ResourceManager.SetLanguage(value);
                 OnPropertyChanged(nameof(NowLanguageName));
+                SelectedLanguage = ResourceManager.CurrentCulture;
             }
         }
 
@@ -63,8 +64,11 @@ namespace Pi18nTest
         public ViewModel()
         {
             ResourceManager.SetUp("resource", "language-resource-{I18N}.{ANY}.i18n");
-            SelectedLanguage = ResourceManager.CultureInfoList[0];
-            ResourceManager.DefaultCulture = SelectedLanguage;
+            if (!ResourceManager.SetDefault(CultureType.CurrentCulture))
+            {
+                ResourceManager.SetDefault(ResourceManager.CultureInfoList[0]);
+            }
+            SelectedLanguage = ResourceManager.CurrentCulture;
             MessageBoxCommand = new RelayCommand(ShowMessageBox);
 
             ResourceManager.LanguageChanged += (s, e) =>

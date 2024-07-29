@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace Pi18n
 {
+    public enum CultureType { CurrentUICulture, CurrentCulture }
     public class ResourceManager : INotifyPropertyChanged
     {
         private static readonly Lazy<ResourceManager> s_instance = new Lazy<ResourceManager>(() => new ResourceManager());
@@ -140,7 +141,7 @@ namespace Pi18n
                 return false;
             }
 
-            Instance._defaultCulture = cultureInfo;
+            SetDefaultInstance(cultureInfo);
 
             return true;
         }
@@ -157,9 +158,36 @@ namespace Pi18n
                 return false;
             }
 
-            Instance._defaultCulture = cultureInfo;
+            SetDefaultInstance(cultureInfo);
 
             return true;
+        }
+
+        /// <summary>
+        /// Sets the default language by culture type (CurrentUICulture | CurrentCulture).
+        /// </summary>
+        /// <param name="cultureType">Culture type</param>
+        public static bool SetDefault(CultureType cultureType)
+        {
+            CultureInfo cultureInfo = CultureInfoList.Where((x) => x.Name == (cultureType == CultureType.CurrentUICulture ? CultureInfo.CurrentUICulture.Name : CultureInfo.CurrentCulture.Name)).FirstOrDefault();
+            if (cultureInfo == null)
+            {
+                return false;
+            }
+
+            SetDefaultInstance(cultureInfo);
+
+            return true;
+        }
+
+        private static void SetDefaultInstance(CultureInfo cultureInfo)
+        {
+            Instance._defaultCulture = cultureInfo;
+
+            if (CurrentCulture == null)
+            {
+                SetLanguage(cultureInfo);
+            }
         }
 
         /// <summary>
