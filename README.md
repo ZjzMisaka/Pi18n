@@ -43,6 +43,9 @@ Access the localized strings using the `ResourceManager`.
 ```csharp
 MessageBox.Show(ResourceManager["MessageText"]);
 ```
+```csharp
+MessageBox.Show(ResourceManager.MessageText);
+```
 
 #### Use MVVM for data binding
 
@@ -54,6 +57,9 @@ public class ViewModel : ObservableObject
 ```
 ```xaml
 <TextBlock Text="{Binding ResourceManager[Hello]}"/>
+```
+```xaml
+<TextBlock Text="{Binding ResourceManager.Hello}"/>
 ```
 
 ## APIS

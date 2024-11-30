@@ -14,7 +14,7 @@
         <TextBlock Text="{Binding NowLanguageName}" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="28" Margin="0,30,0,0"/>
         
         <TextBlock Text="{Binding ResourceManager[Hello]}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Margin="0,0,0,160"/>
-        <TextBlock Text="{Binding ResourceManager[World]}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Margin="0,0,0,100"/>
+        <TextBlock Text="{Binding ResourceManager.World}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Margin="0,0,0,100"/>
 
         <TextBox Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Margin="0,90,0,0"/>
         <TextBlock Text="{Binding FormattedText}" Width="auto" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Margin="0,150,0,0"/>
