@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Dynamic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -9,14 +10,14 @@ using System.Text.RegularExpressions;
 namespace Pi18n
 {
     public enum CultureType { CurrentUICulture, CurrentCulture }
-    public class ResourceManager : INotifyPropertyChanged
+    public class ResourceManager : DynamicObject, INotifyPropertyChanged
     {
         private static readonly Lazy<ResourceManager> s_instance = new Lazy<ResourceManager>(() => new ResourceManager());
-        private Dictionary<string, string> _currentResourceDict;
         private CultureInfo _defaultCulture;
         private CultureInfo _currentCulture;
         private Dictionary<string, List<string>> _languageDict;
         private List<CultureInfo> _cultureList;
+        private ExpandoObject _dynamicProperties;
 
         /// <summary>
         /// Get instance of ResourceManager
@@ -62,12 +63,12 @@ namespace Pi18n
 
         private ResourceManager()
         {
-            _currentResourceDict = new Dictionary<string, string>();
+            _dynamicProperties = new ExpandoObject();
         }
 
         public string this[string key]
         {
-            get => _currentResourceDict.ContainsKey(key) ? _currentResourceDict[key] : "NOT FOUND";
+            get => ((IDictionary<string, object>)_dynamicProperties).ContainsKey(key) ? (string)((IDictionary<string, object>)_dynamicProperties)[key] : "NOT FOUND";
         }
 
         /// <summary>
@@ -241,7 +242,7 @@ namespace Pi18n
         {
             CultureInfo oldCulture = CurrentCulture;
             _currentCulture = newCulture;
-            _currentResourceDict = new Dictionary<string, string>();
+            _dynamicProperties = new ExpandoObject();
 
             foreach (string path in _languageDict[newCulture.Name])
             {
@@ -269,10 +270,23 @@ namespace Pi18n
                 if (parts.Length == 2)
                 {
                     parts[0] = parts[0].Replace("\\=", "=");
-                    parts[1] = parts[1].Replace("\\=", "=");
-                    _currentResourceDict[parts[0]] = parts[1].Replace("\\n", "\n");
+                    parts[1] = parts[1].Replace("\\=", "=").Replace("\\n", "\n");
+                    ((IDictionary<string, object>)_dynamicProperties)[parts[0]] = parts[1];
                 }
             }
+        }
+
+        public override bool TrySetMember(SetMemberBinder binder, object value)
+        {
+            var propertiesDict = (IDictionary<string, object>)_dynamicProperties;
+            propertiesDict[binder.Name] = value;
+            return true;
+        }
+
+        public override bool TryGetMember(GetMemberBinder binder, out object result)
+        {
+            var propertiesDict = (IDictionary<string, object>)_dynamicProperties;
+            return propertiesDict.TryGetValue(binder.Name, out result);
         }
 
         private void OnPropertyChanged(string name)
