@@ -38,28 +38,32 @@ Example:
 
 #### Use directly in Code-Behind
 
-Access the localized strings using the `ResourceManager`.
-
+Access the localized strings using the `Resource`.
 ```csharp
-MessageBox.Show(ResourceManager["MessageText"]);
+public class CustomClass
+{
+    public dynamic Resource => ResourceManager.Instance;
+}
 ```
 ```csharp
-MessageBox.Show(ResourceManager.MessageText);
+MessageBox.Show(Resource["MessageText"]);
+```
+```csharp
+MessageBox.Show(Resource.MessageText);
 ```
 
 #### Use MVVM for data binding
-
 ```csharp
 public class ViewModel : ObservableObject
 {
-    public ResourceManager ResourceManager => ResourceManager.Instance;
+    public dynamic Resource => ResourceManager.Instance;
 }
 ```
 ```xaml
-<TextBlock Text="{Binding ResourceManager[Hello]}"/>
+<TextBlock Text="{Binding Resource[Hello]}"/>
 ```
 ```xaml
-<TextBlock Text="{Binding ResourceManager.Hello}"/>
+<TextBlock Text="{Binding Resource.Hello}"/>
 ```
 
 ## APIS
