@@ -22,14 +22,16 @@ namespace Pi18n
         /// <summary>
         /// Get instance of ResourceManager
         /// </summary>
-        public static ResourceManager Instance => s_instance.Value;
+        public static dynamic Instance => s_instance.Value;
+
+        private static ResourceManager ResourceManagerInstance => s_instance.Value;
 
         /// <summary>
         /// Get or set default CultureInfo instance
         /// </summary>
         public static CultureInfo DefaultCulture
         {
-            get => Instance._defaultCulture;
+            get => ResourceManagerInstance._defaultCulture;
             set => SetDefault(value);
         }
 
@@ -38,28 +40,28 @@ namespace Pi18n
         /// </summary>
         public static CultureInfo CurrentCulture
         {
-            get => Instance._currentCulture;
+            get => ResourceManagerInstance._currentCulture;
             set => SetLanguage(value);
         }
         /// <summary>
         /// Get list of CultureInfo instance
         /// </summary>
-        public static List<CultureInfo> CultureInfoList => Instance._cultureList;
+        public static List<CultureInfo> CultureInfoList => ResourceManagerInstance._cultureList;
         /// <summary>
         /// Get list of culture code (like "en-US")
         /// </summary>
-        public static List<string> CultureCodeList => Instance._cultureList.Select((x) => x.Name).ToList();
+        public static List<string> CultureCodeList => ResourceManagerInstance._cultureList.Select((x) => x.Name).ToList();
         /// <summary>
         /// Get list of culture name (like "English (United States)")
         /// </summary>
-        public static List<string> CultureNameList => Instance._cultureList.Select((x) => x.NativeName).ToList();
+        public static List<string> CultureNameList => ResourceManagerInstance._cultureList.Select((x) => x.NativeName).ToList();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// Language changed
         /// </summary>
-        public event EventHandler<LanguageChangedEventArgs> LanguageChanged;
+        public static event EventHandler<LanguageChangedEventArgs> LanguageChanged;
 
         private ResourceManager()
         {
@@ -77,9 +79,9 @@ namespace Pi18n
         /// <param name="key"></param>
         /// <param name="args"></param>
         /// <returns>Formatted string</returns>
-        public string GetFormat(string key, params object[] args)
+        public static string GetFormat(string key, params object[] args)
         {
-            return string.Format(this[key], args);
+            return string.Format(ResourceManagerInstance[key], args);
         }
 
         /// <summary>
@@ -89,7 +91,7 @@ namespace Pi18n
         /// <param name="fileFormat">naming convention</param>
         public static void SetUp(string path, string fileFormat)
         {
-            Instance.SetUpInstance(path, fileFormat);
+            ResourceManagerInstance.SetUpInstance(path, fileFormat);
         }
 
         private void SetUpInstance(string path, string format)
@@ -97,7 +99,7 @@ namespace Pi18n
             _cultureList = new List<CultureInfo>();
             _languageDict = new Dictionary<string, List<string>>();
 
-            string filePatternRegex = format.Replace("{I18N}", @"([a-z]{2}-[A-Z]{2})").Replace("{ANY}", @"(.*)");
+            string filePatternRegex = format.Replace("{I18N}", @"([a-zA-Z\-]+)").Replace("{ANY}", @"(.*)");
             List<int> placeholderIndexes = new List<int>();
             int cultureIndex = format.IndexOf("{I18N}");
             int anyIndex = format.IndexOf("{ANY}");
@@ -183,7 +185,7 @@ namespace Pi18n
 
         private static void SetDefaultInstance(CultureInfo cultureInfo)
         {
-            Instance._defaultCulture = cultureInfo;
+            ResourceManagerInstance._defaultCulture = cultureInfo;
 
             if (CurrentCulture == null)
             {
@@ -206,7 +208,7 @@ namespace Pi18n
                 return false;
             }
 
-            Instance.SetLanguageInstance(cultureInfo);
+            ResourceManagerInstance.SetLanguageInstance(cultureInfo);
 
             return true;
         }
@@ -223,7 +225,7 @@ namespace Pi18n
                 return false;
             }
 
-            Instance.SetLanguageInstance(cultureInfo);
+            ResourceManagerInstance.SetLanguageInstance(cultureInfo);
 
             return true;
         }
@@ -233,7 +235,7 @@ namespace Pi18n
             CultureInfo cultureInfo = CultureInfoList.Where((x) => x.Name == cultureCode).FirstOrDefault();
             if (cultureInfo == null)
             {
-                cultureInfo = Instance._defaultCulture;
+                cultureInfo = ResourceManagerInstance._defaultCulture;
             }
             return cultureInfo;
         }

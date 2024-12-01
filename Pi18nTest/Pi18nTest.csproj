@@ -21,13 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="resource\language-resource-ja-JP.msg.i18n" />
-    <None Remove="resource\language-resource-ja-JP.ui.i18n" />
-    <None Remove="resource\language-resource-zh-CN.msg.i18n" />
-    <None Remove="resource\language-resource-zh-CN.ui.i18n" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="F:\_programming\c#\Pi18n\Pi18nTest\.editorconfig" />
   </ItemGroup>
 

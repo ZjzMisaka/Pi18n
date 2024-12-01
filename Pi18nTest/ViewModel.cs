@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using System.Dynamic;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -9,7 +11,7 @@ namespace Pi18nTest
 {
     public class ViewModel : ObservableObject
     {
-        public ResourceManager ResourceManager => ResourceManager.Instance;
+        public dynamic Resource => ResourceManager.Instance;
 
         private CultureInfo _selectedLanguage;
         public CultureInfo SelectedLanguage
@@ -54,6 +56,23 @@ namespace Pi18nTest
                 ResourceManager.SetLanguage(value);
                 OnPropertyChanged(nameof(NowLanguageName));
                 SelectedLanguage = ResourceManager.CurrentCulture;
+                try
+                {
+                    CultureText = CultureInfo.GetCultureInfo(value, false).NativeName;
+                }
+                catch
+                {
+                    CultureText = "";
+                }
+            }
+        }
+        private string _cultureText;
+        public string CultureText
+        {
+            get => _cultureText;
+            set
+            {
+                SetProperty<string>(ref _cultureText, value);
             }
         }
 
@@ -79,7 +98,8 @@ namespace Pi18nTest
 
         private void ShowMessageBox()
         {
-            MessageBox.Show(ResourceManager["MessageText"]);
+            MessageBox.Show(Resource["MessageText"]);
+            MessageBox.Show(Resource.MessageText);
         }
     }
 }
