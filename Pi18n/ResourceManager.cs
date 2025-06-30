@@ -66,12 +66,12 @@ namespace Pi18n
         /// <summary>
         /// If true, return the key if not found in the resource file.
         /// </summary>
-        public bool ReturnKeyIfNotFound { get; set; } = false;
+        public static bool ReturnKeyIfNotFound { get; set; } = false;
 
         /// <summary>
         /// Default content if the key is not found in the resource file.
         /// </summary>
-        public string DefaultContent { set; get; } = "NOT FOUND";
+        public static string DefaultContent { set; get; } = "NOT FOUND";
 
         private ResourceManager()
         {
