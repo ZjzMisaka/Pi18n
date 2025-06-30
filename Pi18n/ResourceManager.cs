@@ -63,6 +63,16 @@ namespace Pi18n
         /// </summary>
         public static event EventHandler<LanguageChangedEventArgs> LanguageChanged;
 
+        /// <summary>
+        /// If true, return the key if not found in the resource file.
+        /// </summary>
+        public bool ReturnKeyIfNotFound { get; set; } = false;
+
+        /// <summary>
+        /// Default content if the key is not found in the resource file.
+        /// </summary>
+        public string DefaultContent { set; get; } = "NOT FOUND";
+
         private ResourceManager()
         {
             _dynamicProperties = new ExpandoObject();
@@ -70,7 +80,7 @@ namespace Pi18n
 
         public string this[string key]
         {
-            get => ((IDictionary<string, object>)_dynamicProperties).ContainsKey(key) ? (string)((IDictionary<string, object>)_dynamicProperties)[key] : "NOT FOUND";
+            get => ((IDictionary<string, object>)_dynamicProperties).ContainsKey(key) ? (string)((IDictionary<string, object>)_dynamicProperties)[key] : ReturnKeyIfNotFound ? key : DefaultContent;
         }
 
         /// <summary>
