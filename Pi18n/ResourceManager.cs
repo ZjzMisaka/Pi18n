@@ -80,7 +80,15 @@ namespace Pi18n
 
         public string this[string key]
         {
-            get => ((IDictionary<string, object>)_dynamicProperties).ContainsKey(key) ? (string)((IDictionary<string, object>)_dynamicProperties)[key] : ReturnKeyIfNotFound ? key : DefaultContent;
+            get
+            {
+                if (key == null)
+                {
+                    return ReturnKeyIfNotFound ? key : DefaultContent;
+                }
+                var dict = (IDictionary<string, object>)_dynamicProperties;
+                return dict.ContainsKey(key) ? (string)dict[key] : ReturnKeyIfNotFound ? key : DefaultContent;
+            }
         }
 
         /// <summary>
