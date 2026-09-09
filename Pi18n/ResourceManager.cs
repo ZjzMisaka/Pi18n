@@ -76,6 +76,9 @@ namespace Pi18n
         private ResourceManager()
         {
             _dynamicProperties = new ExpandoObject();
+
+            _cultureList = new List<CultureInfo>();
+            _languageDict = new Dictionary<string, List<string>>();
         }
 
         public string this[string key]
@@ -114,8 +117,14 @@ namespace Pi18n
 
         private void SetUpInstance(string path, string format)
         {
-            _cultureList = new List<CultureInfo>();
-            _languageDict = new Dictionary<string, List<string>>();
+            if (_cultureList == null)
+            {
+                _cultureList = new List<CultureInfo>();
+            }
+            if (_languageDict == null)
+            {
+                _languageDict = new Dictionary<string, List<string>>();
+            }
 
             string filePatternRegex = format.Replace("{I18N}", @"([a-zA-Z\-]+)").Replace("{ANY}", @"(.*)");
             List<int> placeholderIndexes = new List<int>();
@@ -135,17 +144,17 @@ namespace Pi18n
                 string fileName = Path.GetFileName(file);
                 Match match = Regex.Match(fileName, filePatternRegex);
 
-                if (match.Success)
+                if (match.Success && match.Groups.Count > 1)
                 {
-                    if (match.Groups.Count > 1)
+                    string cultureName = match.Groups[cultureGroupIndex].Value;
+
+                    if (!_languageDict.ContainsKey(cultureName))
                     {
-                        if (!_languageDict.ContainsKey(match.Groups[cultureGroupIndex].Value))
-                        {
-                            _languageDict[match.Groups[cultureGroupIndex].Value] = new List<string>();
-                            _cultureList.Add(new CultureInfo(match.Groups[cultureGroupIndex].Value, false));
-                        }
-                        _languageDict[match.Groups[cultureGroupIndex].Value].Add(file);
+                        _languageDict[cultureName] = new List<string>();
+                        _cultureList.Add(new CultureInfo(cultureName, false));
                     }
+
+                    _languageDict[cultureName].Add(file);
                 }
             }
         }
