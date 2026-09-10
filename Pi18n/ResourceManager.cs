@@ -115,17 +115,21 @@ namespace Pi18n
             ResourceManagerInstance.SetUpInstance(path, fileFormat);
         }
 
+        /// <summary>
+        /// Resets the ResourceManager to its initial state, clearing all loaded resources and settings.
+        /// </summary>
+        public static void Reset()
+        {
+            var instance = ResourceManagerInstance;
+            instance._cultureList = new List<CultureInfo>();
+            instance._languageDict = new Dictionary<string, List<string>>();
+            instance._dynamicProperties = new ExpandoObject();
+            instance._defaultCulture = null;
+            instance._currentCulture = null;
+        }
+
         private void SetUpInstance(string path, string format)
         {
-            if (_cultureList == null)
-            {
-                _cultureList = new List<CultureInfo>();
-            }
-            if (_languageDict == null)
-            {
-                _languageDict = new Dictionary<string, List<string>>();
-            }
-
             string filePatternRegex = format.Replace("{I18N}", @"([a-zA-Z\-]+)").Replace("{ANY}", @"(.*)");
             List<int> placeholderIndexes = new List<int>();
             int cultureIndex = format.IndexOf("{I18N}");
@@ -156,6 +160,11 @@ namespace Pi18n
 
                     _languageDict[cultureName].Add(file);
                 }
+            }
+
+            if (CurrentCulture != null)
+            {
+                SetLanguage(CurrentCulture);
             }
         }
 
