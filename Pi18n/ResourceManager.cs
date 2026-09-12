@@ -5,6 +5,7 @@ using System.Dynamic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Pi18n
@@ -130,7 +131,9 @@ namespace Pi18n
 
         private void SetUpInstance(string path, string format)
         {
-            string filePatternRegex = format.Replace("{I18N}", @"([a-zA-Z\-]+)").Replace("{ANY}", @"(.*)");
+            string filePatternRegex = Regex.Escape(format)
+                .Replace(Regex.Escape("{I18N}"), @"([a-zA-Z\-]+)")
+                .Replace(Regex.Escape("{ANY}"), @"(.*)");
             List<int> placeholderIndexes = new List<int>();
             int cultureIndex = format.IndexOf("{I18N}");
             int anyIndex = format.IndexOf("{ANY}");
@@ -296,22 +299,81 @@ namespace Pi18n
             string[] lines;
             try
             {
-                lines = File.ReadAllLines(filePath);
+                lines = File.ReadAllLines(filePath, Encoding.UTF8);
             }
             catch
             {
                 return;
             }
+
             foreach (string line in lines)
             {
-                string[] parts = Regex.Split(line, @"(?<!\\)=");
-                if (parts.Length == 2)
+                if (string.IsNullOrWhiteSpace(line) || line.TrimStart().StartsWith("#"))
                 {
-                    parts[0] = parts[0].Replace("\\=", "=");
-                    parts[1] = parts[1].Replace("\\=", "=").Replace("\\n", "\n");
-                    ((IDictionary<string, object>)_dynamicProperties)[parts[0]] = parts[1];
+                    continue;
+                }
+
+                if (TryParseLine(line, out string key, out string value))
+                {
+                    ((IDictionary<string, object>)_dynamicProperties)[key] = value;
                 }
             }
+        }
+
+        private static bool TryParseLine(string line, out string key, out string value)
+        {
+            var sb = new StringBuilder();
+            int i = 0;
+            int n = line.Length;
+            bool keyDone = false;
+            key = value = null;
+            var keySb = new StringBuilder();
+            var valSb = new StringBuilder();
+
+            while (i < n)
+            {
+                char c = line[i];
+                if (c == '\\' && i + 1 < n)
+                {
+                    char next = line[i + 1];
+                    char decoded;
+                    switch (next)
+                    {
+                        case '\\':
+                            decoded = '\\';
+                            break;
+                        case '=':
+                            decoded = '=';
+                            break;
+                        case 'n':
+                            decoded = '\n';
+                            break;
+                        default:
+                            decoded = next;
+                            break;
+                    }
+                    (keyDone ? valSb : keySb).Append(decoded);
+                    i += 2;
+                    continue;
+                }
+                if (c == '=' && !keyDone)
+                {
+                    keyDone = true;
+                    i++;
+                    continue;
+                }
+                (keyDone ? valSb : keySb).Append(c);
+                i++;
+            }
+
+            if (!keyDone)
+            {
+                return false;
+            }
+
+            key = keySb.ToString();
+            value = valSb.ToString();
+            return true;
         }
 
         public override bool TrySetMember(SetMemberBinder binder, object value)
